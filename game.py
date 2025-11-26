@@ -37,10 +37,24 @@ class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
 
 
 class Tiles(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, gravity, offset):
         super().__init__()
         self.image = pygame.image.load(os.path.join("assets/sprites/tile.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=(x, y))
+        self.gravity = gravity
+        self.offset = offset
+
+    def update(self): 
+        self.rect.y += self.gravity
+        self.rect.x += self.offset
+
+class Grid(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load(os.path.join("assets/sprites/grid.png")).convert_alpha()
+        # This will be an issue with coliding!!
+        self.rect = self.image.get_rect(topleft=(x,y))
+
 
 
 # -- Instrument Group --
@@ -67,8 +81,14 @@ instrument_group.add(cymbal, drum, big_drum, drum_left, cymbal_left)
 
 # -- Tile Group --
 tile_group = pygame.sprite.Group()
-tile_default = Tiles(0, 0)
+tile_default = Tiles(200, 20, 2, 0.5)
 tile_group.add(tile_default)
+
+# -- Grid Group --
+grid_group = pygame.sprite.Group()
+grid_default = Grid(200,100)
+grid_group.add(grid_default)
+
 
 # -- Background --
 background_static = pygame.image.load(
@@ -86,6 +106,7 @@ while True:
     screen.blit(background_static, (0, 0))
     instrument_group.draw(screen)
     tile_group.draw(screen)
+    grid_group.draw(screen)
 
     # -- Keys & Mouse Variables
     keys = pygame.key.get_pressed()
@@ -94,6 +115,9 @@ while True:
     # -- Mouse --
     for instrument in instrument_group:
         instrument.clicked_bymouse()
+
+    # -- Tiles --
+    tile_group.update()
 
     # drum.clicked_bymouse()
     # big_drum.clicked_bymouse()
