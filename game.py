@@ -51,7 +51,8 @@ class Tiles(pygame.sprite.Sprite):
 class Grid(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("assets/sprites/grid.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join("assets/sprites/gird.png")).convert_alpha()
+        self.image = pygame.transform.scale2x(self.image)
         # This will be an issue with coliding!!
         self.rect = self.image.get_rect(topleft=(x,y))
 
@@ -86,7 +87,7 @@ tile_group.add(tile_default)
 
 # -- Grid Group --
 grid_group = pygame.sprite.Group()
-grid_default = Grid(200,100)
+grid_default = Grid(300,50)
 grid_group.add(grid_default)
 
 
