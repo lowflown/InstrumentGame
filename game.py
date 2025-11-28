@@ -39,23 +39,27 @@ class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
 class Tiles(pygame.sprite.Sprite):
     def __init__(self, x, y, gravity, offset):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("assets/sprites/tile.png")).convert_alpha()
+        self.image = pygame.image.load(
+            os.path.join("assets/sprites/tile.png")
+        ).convert_alpha()
         self.rect = self.image.get_rect(topleft=(x, y))
         self.gravity = gravity
         self.offset = offset
 
-    def update(self): 
+    def update(self):
         self.rect.y += self.gravity
         self.rect.x += self.offset
+
 
 class Grid(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("assets/sprites/gird.png")).convert_alpha()
+        self.image = pygame.image.load(
+            os.path.join("assets/sprites/gird.png")
+        ).convert_alpha()
         self.image = pygame.transform.scale2x(self.image)
         # This will be an issue with coliding!!
-        self.rect = self.image.get_rect(topleft=(x,y))
-
+        self.rect = self.image.get_rect(topleft=(x, y))
 
 
 # -- Instrument Group --
@@ -82,12 +86,12 @@ instrument_group.add(cymbal, drum, big_drum, drum_left, cymbal_left)
 
 # -- Tile Group --
 tile_group = pygame.sprite.Group()
-tile_default = Tiles(200, 20, 2, 0.5)
+tile_default = Tiles(320, 20, 2, 0)
 tile_group.add(tile_default)
 
 # -- Grid Group --
 grid_group = pygame.sprite.Group()
-grid_default = Grid(300,50)
+grid_default = Grid(300, 50)
 grid_group.add(grid_default)
 
 
