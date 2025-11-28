@@ -58,7 +58,15 @@ class Grid(pygame.sprite.Sprite):
             os.path.join("assets/sprites/gird.png")
         ).convert_alpha()
         self.image = pygame.transform.scale2x(self.image)
-        # This will be an issue with coliding!!
+        self.rect = self.image.get_rect(topleft=(x, y))
+
+
+class NoteLine(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load(
+            os.path.join("assets/sprites/note_line.png")
+        ).convert_alpha()
         self.rect = self.image.get_rect(topleft=(x, y))
 
 
@@ -94,6 +102,10 @@ grid_group = pygame.sprite.Group()
 grid_default = Grid(300, 50)
 grid_group.add(grid_default)
 
+# -- Note Line Group --
+noteline_group = pygame.sprite.Group()
+noteline_default = NoteLine(320, 650)
+noteline_default.add(noteline_group)
 
 # -- Background --
 background_static = pygame.image.load(
@@ -112,6 +124,7 @@ while True:
     instrument_group.draw(screen)
     tile_group.draw(screen)
     grid_group.draw(screen)
+    noteline_group.draw(screen)
 
     # -- Keys & Mouse Variables
     keys = pygame.key.get_pressed()
