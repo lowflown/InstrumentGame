@@ -50,6 +50,11 @@ class Tiles(pygame.sprite.Sprite):
         self.rect.y += self.gravity
         self.rect.x += self.offset
 
+    def colliding_with_line(self):
+        if pygame.sprite.spritecollide(self, noteline_group, False):
+            Tiles.kill(self)
+            print("worked")
+
 
 class Grid(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -131,20 +136,19 @@ while True:
     mouse_pos = pygame.mouse.get_pos()
 
     # -- Mouse --
-    for instrument in instrument_group:
-        instrument.clicked_bymouse()
 
     # -- Tiles --
     tile_group.update()
 
-    # drum.clicked_bymouse()
-    # big_drum.clicked_bymouse()
-    # drum_left.clicked_bymouse()
+    if cymbal.clicked_bymouse():
+        print("clicked")
+        tile_default.colliding_with_line()
 
     # -- Keyboard Presses --
     # if keys[pygame.K_z]:
-    # cymbal.sound.play()
-    # pygame.time.delay(180)
+    #     cymbal.sound.play()
+    #     pygame.time.delay(180)
+    #     tile_default.colliding_with_line()
 
     # if keys[pygame.K_x]:
     #     drum.sound.play()
