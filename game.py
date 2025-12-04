@@ -36,17 +36,7 @@ class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
             if now - self.last > self.cooldown:
                 self.sound.play()
                 self.last = now
-
-    # -- Clicked By Mouse --
-    def clicked_bymouse(self):
-        if self.rect.collidepoint(mouse_pos):
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                now = pygame.time.get_ticks()
-                if now - self.last > self.cooldown:
-                    self.sound.play()
-                    self.last = now
-
-
+        
 class Tiles(pygame.sprite.Sprite):
     def __init__(self, x, y, gravity, offset):
         super().__init__()
@@ -60,11 +50,12 @@ class Tiles(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.gravity
         self.rect.x += self.offset
+        # self.colliding_with_line()
 
     def colliding_with_line(self):
         if pygame.sprite.spritecollide(self, noteline_group, False):
+            print("worked")
             Tiles.kill(self)
-
 
 class Grid(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -75,7 +66,6 @@ class Grid(pygame.sprite.Sprite):
         self.image = pygame.transform.scale2x(self.image)
         self.rect = self.image.get_rect(topleft=(x, y))
 
-
 class NoteLine(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -84,10 +74,8 @@ class NoteLine(pygame.sprite.Sprite):
         ).convert_alpha()
         self.rect = self.image.get_rect(topleft=(x, y))
 
-
 # -- Instrument Group --
 instrument_group = pygame.sprite.Group()
-
 
 cymbal = Instrument(
     "assets/sprites/cymbal_up.png",
@@ -157,19 +145,13 @@ while True:
     grid_group.draw(screen)
     noteline_group.draw(screen)
 
-    # -- Keys & Mouse Variables
-    # keys = pygame.key.get_pressed()
-    mouse_pos = pygame.mouse.get_pos()
-
     # -- Mouse --
+    mouse_pos = pygame.mouse.get_pos()
 
     # -- Tiles --
     tile_group.update()
-
-    if cymbal.clicked_bymouse():
-        print("clicked")
-        tile_default.colliding_with_line()
-
+     
+    # -- Instruments --
     instrument_group.update()
 
     # -- Updating (End of loop) --
