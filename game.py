@@ -172,23 +172,6 @@ while True:
 
     instrument_group.update()
 
-    # -- Keyboard Presses --
-    # if keys[pygame.K_z]:
-    #     cymbal.sound.play()
-    #     pygame.time.delay(180)
-    #     tile_default.colliding_with_line()
-
-    # if keys[pygame.K_x]:
-    #     drum.sound.play()
-    #     pygame.time.delay(180)
-
-    # if keys[pygame.K_c]:
-    #     big_drum.sound.play()
-    #     pygame.time.delay(180)
-
-    # if keys[pygame.K_v] and cooldown == False:
-    #     drum_left.sound.play()
-
     # -- Updating (End of loop) --
     pygame.display.update()
     clock.tick(60)
