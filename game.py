@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 
 # -- Classes --
 class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
-    def __init__(self, image_path, sound_path, x, y):
+    def __init__(self, image_path, sound_path, x, y, keybind):
         super().__init__()
         self.image = pygame.image.load(os.path.join(image_path)).convert_alpha()
         self.rect = self.image.get_rect(topleft=(x, y))
@@ -25,6 +25,17 @@ class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
 
         self.last = 0
         self.cooldown = 180
+        self.keybind = keybind
+
+    def update(self):
+        self.key_press()
+
+    def key_press(self):
+        if pygame.key.get_pressed()[self.keybind]:
+            now = pygame.time.get_ticks()
+            if now - self.last > self.cooldown:
+                self.sound.play()
+                self.last = now
 
     # -- Clicked By Mouse --
     def clicked_bymouse(self):
@@ -53,7 +64,6 @@ class Tiles(pygame.sprite.Sprite):
     def colliding_with_line(self):
         if pygame.sprite.spritecollide(self, noteline_group, False):
             Tiles.kill(self)
-            print("worked")
 
 
 class Grid(pygame.sprite.Sprite):
@@ -80,19 +90,35 @@ instrument_group = pygame.sprite.Group()
 
 
 cymbal = Instrument(
-    "assets/sprites/cymbal_up.png", "assets/sound/sfx/cymbal_crash.mp3", 213, 760
+    "assets/sprites/cymbal_up.png",
+    "assets/sound/sfx/cymbal_crash.mp3",
+    213,
+    760,
+    pygame.K_z,
 )
-cymbal_left = Instrument(
-    "assets/sprites/cymbal_up.png", "assets/sound/sfx/cymbal2.mp3", 213 * 5, 760
-)
+
 drum = Instrument(
-    "assets/sprites/drum_up.png", "assets/sound/sfx/drum.mp3", 213 * 2, 780
+    "assets/sprites/drum_up.png", "assets/sound/sfx/drum.mp3", 213 * 2, 780, pygame.K_c
 )
-drum_left = Instrument(
-    "assets/sprites/drum_up.png", "assets/sound/sfx/drum2.mp3", 213 * 4, 780
-)
+
 big_drum = Instrument(
-    "assets/sprites/bigdrum.png", "assets/sound/sfx/bass_drumsfx.mp3", 213 * 3, 800
+    "assets/sprites/bigdrum.png",
+    "assets/sound/sfx/bass_drumsfx.mp3",
+    213 * 3,
+    800,
+    pygame.K_b,
+)
+
+drum_left = Instrument(
+    "assets/sprites/drum_up.png", "assets/sound/sfx/drum2.mp3", 213 * 4, 780, pygame.K_v
+)
+
+cymbal_left = Instrument(
+    "assets/sprites/cymbal_up.png",
+    "assets/sound/sfx/cymbal2.mp3",
+    213 * 5,
+    760,
+    pygame.K_x,
 )
 
 instrument_group.add(cymbal, drum, big_drum, drum_left, cymbal_left)
@@ -132,7 +158,7 @@ while True:
     noteline_group.draw(screen)
 
     # -- Keys & Mouse Variables
-    keys = pygame.key.get_pressed()
+    # keys = pygame.key.get_pressed()
     mouse_pos = pygame.mouse.get_pos()
 
     # -- Mouse --
@@ -143,6 +169,8 @@ while True:
     if cymbal.clicked_bymouse():
         print("clicked")
         tile_default.colliding_with_line()
+
+    instrument_group.update()
 
     # -- Keyboard Presses --
     # if keys[pygame.K_z]:
