@@ -36,7 +36,8 @@ class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
             if now - self.last > self.cooldown:
                 self.sound.play()
                 self.last = now
-        
+
+
 class Tiles(pygame.sprite.Sprite):
     def __init__(self, x, y, gravity, offset):
         super().__init__()
@@ -57,6 +58,7 @@ class Tiles(pygame.sprite.Sprite):
             print("worked")
             Tiles.kill(self)
 
+
 class Grid(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -66,6 +68,7 @@ class Grid(pygame.sprite.Sprite):
         self.image = pygame.transform.scale2x(self.image)
         self.rect = self.image.get_rect(topleft=(x, y))
 
+
 class NoteLine(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -73,6 +76,7 @@ class NoteLine(pygame.sprite.Sprite):
             os.path.join("assets/sprites/note_line.png")
         ).convert_alpha()
         self.rect = self.image.get_rect(topleft=(x, y))
+
 
 # -- Instrument Group --
 instrument_group = pygame.sprite.Group()
@@ -150,7 +154,7 @@ while True:
 
     # -- Tiles --
     tile_group.update()
-     
+
     # -- Instruments --
     instrument_group.update()
 
