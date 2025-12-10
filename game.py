@@ -7,11 +7,11 @@ import time
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption("InstrumentGame")
-music_playback = pygame.mixer.music.load(
-    os.path.join("assets/sound/music/DokiDoki.mp3")
-)
-pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.15)
+# music_playback = pygame.mixer.music.load(
+#     os.path.join("assets/sound/music/DokiDoki.mp3")
+# )
+# pygame.mixer.music.play(-1)
+# pygame.mixer.music.set_volume(0.15)
 clock = pygame.time.Clock()
 
 
@@ -36,9 +36,13 @@ class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
             if now - self.last > self.cooldown:
                 self.sound.play()
                 self.last = now
-
+            if tile_default.collide_line:
+                print("yes")
+                tile_default.rect.y = 0
+                tile_default.collide_line = False
 
 class Tiles(pygame.sprite.Sprite):
+    collide_line = False
     def __init__(self, x, y, gravity, offset):
         super().__init__()
         self.image = pygame.image.load(
@@ -51,12 +55,13 @@ class Tiles(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.gravity
         self.rect.x += self.offset
-        # self.colliding_with_line()
+        self.colliding_with_line()
 
     def colliding_with_line(self):
         if pygame.sprite.spritecollide(self, noteline_group, False):
-            print("worked")
-            Tiles.kill(self)
+            self.collide_line = True
+        else:
+            self.collide_line = False
 
 
 class Grid(pygame.sprite.Sprite):
@@ -154,7 +159,6 @@ while True:
 
     # -- Tiles --
     tile_group.update()
-
     # -- Instruments --
     instrument_group.update()
 
