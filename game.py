@@ -5,7 +5,7 @@ import time
 
 # -- Screen & Variables--
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080))
+screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
 pygame.display.set_caption("InstrumentGame")
 # music_playback = pygame.mixer.music.load(
 #     os.path.join("assets/sound/music/DokiDoki.mp3")
@@ -95,7 +95,7 @@ cymbal = Instrument(
 )
 
 drum = Instrument(
-    "assets/sprites/drum_up.png", "assets/sound/sfx/drum.mp3", 213 * 2, 780, pygame.K_c
+    "assets/sprites/drum_up.png", "assets/sound/sfx/drum.mp3", 213 * 2, 780, pygame.K_x
 )
 
 big_drum = Instrument(
@@ -103,7 +103,7 @@ big_drum = Instrument(
     "assets/sound/sfx/bass_drumsfx.mp3",
     213 * 3,
     800,
-    pygame.K_b,
+    pygame.K_c,
 )
 
 drum_left = Instrument(
@@ -115,7 +115,7 @@ cymbal_left = Instrument(
     "assets/sound/sfx/cymbal2.mp3",
     213 * 5,
     760,
-    pygame.K_x,
+    pygame.K_b,
 )
 
 instrument_group.add(cymbal, drum, big_drum, drum_left, cymbal_left)
