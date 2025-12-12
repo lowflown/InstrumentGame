@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 import time
+import random
 
 # -- Screen & Variables--
 pygame.init()
