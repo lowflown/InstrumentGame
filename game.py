@@ -6,8 +6,11 @@ import random
 
 # -- Screen & Variables--
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
-pygame.display.set_caption("InstrumentGame")
+screen = pygame.display.set_mode((256, 144))
+# scaled_screen = pygame.transform.scale_by(screen, 7.5)
+icon = pygame.image.load(os.path.join("assets/icon.png")).convert_alpha()
+pygame.display.set_icon(icon)
+pygame.display.set_caption("Beats & Pieces")
 # music_playback = pygame.mixer.music.load(
 #     os.path.join("assets/sound/music/DokiDoki.mp3")
 # )
@@ -18,10 +21,10 @@ clock = pygame.time.Clock()
 
 # -- Classes --
 class Instrument(pygame.sprite.Sprite):  # trqbva da dobavq animacii
-    def __init__(self, image_path, sound_path, x, y, keybind):
+    def __init__(self, image_path, sound_path, x, keybind):
         super().__init__()
         self.image = pygame.image.load(os.path.join(image_path)).convert_alpha()
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.rect = self.image.get_rect(topleft=(x, 112))
         self.sound = pygame.mixer.Sound(sound_path)
 
         self.last = 0
@@ -90,32 +93,29 @@ instrument_group = pygame.sprite.Group()
 cymbal = Instrument(
     "assets/sprites/cymbal_up.png",
     "assets/sound/sfx/cymbal_crash.mp3",
-    213,
-    760,
+    32,
     pygame.K_z,
 )
 
 drum = Instrument(
-    "assets/sprites/drum_up.png", "assets/sound/sfx/drum.mp3", 213 * 2, 780, pygame.K_x
+    "assets/sprites/drum_up.png", "assets/sound/sfx/drum.mp3", 32*2, pygame.K_x
 )
 
 big_drum = Instrument(
     "assets/sprites/bigdrum.png",
     "assets/sound/sfx/bass_drumsfx.mp3",
-    213 * 3,
-    800,
+    32*3,
     pygame.K_c,
 )
 
 drum_left = Instrument(
-    "assets/sprites/drum_up.png", "assets/sound/sfx/drum2.mp3", 213 * 4, 780, pygame.K_v
+    "assets/sprites/drum_up.png", "assets/sound/sfx/drum2.mp3", 32 *4, pygame.K_v
 )
 
 cymbal_left = Instrument(
     "assets/sprites/cymbal_up.png",
-    "assets/sound/sfx/cymbal2.mp3",
-    213 * 5,
-    760,
+    "assets/sound/sfx/cymbal2.mp3", 
+    32*5,
     pygame.K_b,
 )
 
@@ -149,7 +149,7 @@ while True:
             exit()
 
     # -- Drawing --
-    screen.blit(background_static, (0, 0))
+    scaled_screen.blit(background_static, (0, 0))
     instrument_group.draw(screen)
     tile_group.draw(screen)
     grid_group.draw(screen)

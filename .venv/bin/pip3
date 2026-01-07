@@ -1,4 +1,4 @@
-#!/home/linuxos/InstrumentGame/.venv/bin/python3
+#!/home/debian/InstrumentGame/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
