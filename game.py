@@ -6,10 +6,15 @@ import random
 
 # -- Screen & Variables--
 pygame.init()
-screen = pygame.display.set_mode((256, 144))
-# scaled_screen = pygame.transform.scale_by(screen, 7.5)
-icon = pygame.image.load(os.path.join("assets/icon.png")).convert_alpha()
-pygame.display.set_icon(icon)
+scaled_index = 0
+internal_res = (256, 144)
+scaled_width = [1280, 1920, 2560]
+scaled_height = [720, 1080, 1440]
+scaled_res = [(1280, 720), (1920, 1080), (2560, 1440)]
+internal = pygame.Surface(internal_res)
+screen = pygame.display.set_mode(scaled_res[scaled_index])
+# icon = pygame.image.load(os.path.join("assets/icon.png")).convert_alpha()
+# pygame.display.set_icon(icon)
 pygame.display.set_caption("Beats & Pieces")
 # music_playback = pygame.mixer.music.load(
 #     os.path.join("assets/sound/music/DokiDoki.mp3")
@@ -141,6 +146,13 @@ background_static = pygame.image.load(
     "assets/backgrounds/background1.png"
 ).convert_alpha()
 
+# -- Scale Set --
+scale = [5, 7, 10]
+scaled_size = [256*scale[scaled_index], 144*scale[scaled_index]]
+
+x_offset = (scaled_width[scaled_index] - scaled_size[0]) // 2
+y_offset = (scaled_height[scaled_index] - scaled_size[1]) // 2
+
 # == Loop ==
 while True:
     for event in pygame.event.get():
@@ -149,11 +161,11 @@ while True:
             exit()
 
     # -- Drawing --
-    scaled_screen.blit(background_static, (0, 0))
-    instrument_group.draw(screen)
-    tile_group.draw(screen)
-    grid_group.draw(screen)
-    noteline_group.draw(screen)
+    screen.blit(background_static, (0, 0))
+    instrument_group.draw(internal)
+    tile_group.draw(internal)
+    grid_group.draw(internal)
+    noteline_group.draw(internal)
 
     # -- Mouse --
     mouse_pos = pygame.mouse.get_pos()
@@ -162,6 +174,10 @@ while True:
     tile_group.update()
     # -- Instruments --
     instrument_group.update()
+
+    # -- Scaling (Again) -- 
+    new_surf = pygame.transform.scale(internal_res, scaled_size)
+    screen.blit(new_surf, (x_offset, y_offset))
 
     # -- Updating (End of loop) --
     pygame.display.update()
